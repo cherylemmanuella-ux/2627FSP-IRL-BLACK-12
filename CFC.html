@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFC SOUNDS — Independent Record Label</title>
+
+  <!-- Google Fonts: Syne (Display) & Sora (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. VISUAL IDENTITY & CSS VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-primary: #0A0C0E;
+      --bg-secondary: #101317;
+      --text-primary: #EDE7DC;
+      --text-secondary: #9EA5A8;
+      --text-muted: #6C7378;
+      --accent-amber: #E8913C;
+      --accent-teal: #2E6B72;
+      --border-hairline: rgba(237, 231, 220, 0.13);
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Sora', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Typography Helpers */
+    .font-display { font-family: var(--font-display); }
+    .uppercase { text-transform: uppercase; }
+
+    /* Outlined Index Numeral */
+    .text-stroke-outlined {
+      -webkit-text-stroke: 1px rgba(237, 231, 220, 0.2);
+      color: transparent;
+    }
+
+    /* ==========================================================================
+       2. NAVIGATION
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(10, 12, 14, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-brand span {
+      color: var(--accent-amber);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-amber);
+    }
+
+    .nav-cta {
+      border: 1px solid var(--border-hairline);
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      color: var(--text-primary);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+
+    /* ==========================================================================
+       3. PORTAL HERO
+       ========================================================================== */
+    .hero-container {
+      position: relative;
+      height: 250vh;
+      width: 100%;
+    }
+
+    .hero-sticky-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100svh;
+      width: 100%;
+      overflow: hidden;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-bg-photo {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2000&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.15);
+      will-change: transform;
+    }
+
+    .duotone-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(46, 107, 114, 0.4) 0%, transparent 50%, rgba(232, 145, 60, 0.3) 100%);
+      mix-blend-mode: overlay;
+      opacity: 0.6;
+    }
+
+    .radial-veil {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 20%, rgba(10, 12, 14, 0.8) 100%);
+    }
+
+    .portal-panel {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 50.5vw;
+      background-color: var(--bg-primary);
+      z-index: 10;
+      will-change: transform;
+    }
+
+    .portal-panel.left {
+      left: 0;
+      border-right: 1px solid var(--border-hairline);
+    }
+
+    .portal-panel.right {
+      right: 0;
+      border-left: 1px solid var(--border-hairline);
+    }
+
+    .accent-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      z-index: 20;
+      will-change: transform;
+    }
+
+    .dot-amber {
+      background-color: var(--accent-amber);
+      box-shadow: 0 0 12px var(--accent-amber);
+    }
+
+    .dot-teal {
+      background-color: var(--accent-teal);
+      box-shadow: 0 0 12px var(--accent-teal);
+    }
+
+    .hero-wordmark {
+      position: relative;
+      z-index: 30;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.5rem, 7.5vw, 7.5rem);
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      display: flex;
+      gap: 1.5rem;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .wordmark-span {
+      display: inline-block;
+      will-change: transform, letter-spacing;
+    }
+
+    .corner-meta {
+      position: absolute;
+      z-index: 20;
+      font-size: 10.5px;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+    }
+
+    .meta-top-left { top: 80px; left: 2rem; }
+    .meta-top-right { top: 80px; right: 2rem; text-align: right; }
+
+    /* ==========================================================================
+       4. STATEMENT FOLD
+       ========================================================================== */
+    .section-statement {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .statement-content {
+      position: relative;
+      z-index: 2;
+      max-width: 24ch;
+    }
+
+    .section-label {
+      font-size: 10.5px;
+      letter-spacing: 0.15em;
+      color: var(--accent-amber);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .statement-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(24px, 3.6vw, 52px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .statement-text span.highlight {
+      color: var(--accent-amber);
+    }
+
+    .outlined-numeral {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(120px, 25vw, 380px);
+      line-height: 1;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    .floating-circle-img {
+      position: absolute;
+      right: -100px;
+      top: 20%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--border-hairline);
+      z-index: 2;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       5. RELEASES — PHYSICAL RECORD DECK
+       ========================================================================== */
+    .section-deck {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+
+    @media (min-width: 992px) {
+      .section-deck {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .deck-info h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .deck-info p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 1.75rem;
+      border: 1px solid var(--border-hairline);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      transition: all 0.3s ease;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+
+    .btn-secondary {
+      color: var(--text-secondary);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+
+    /* Deck Interaction Stage */
+    .deck-stage {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      touch-action: pan-y;
+      outline: none;
+    }
+
+    .deck-card {
+      position: absolute;
+      inset: 0;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 1rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      user-select: none;
+      cursor: grab;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: transform;
+    }
+
+    .deck-card:active {
+      cursor: grabbing;
+    }
+
+    .deck-card img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+      pointer-events: none;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-cat {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    .card-artist {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .deck-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* ==========================================================================
+       6. ARTIST ROSTER
+       ========================================================================== */
+    .section-roster {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .roster-list {
+      list-style: none;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .roster-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-hairline);
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .roster-row:hover .roster-name {
+      color: var(--accent-amber);
+      transform: translateX(10px);
+    }
+
+    .roster-num {
+      font-size: 11px;
+      color: var(--accent-teal);
+      letter-spacing: 0.12em;
+      min-width: 100px;
+    }
+
+    .roster-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      transition: transform 0.3s ease, color 0.3s ease;
+      flex-grow: 1;
+    }
+
+    .roster-count {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+    }
+
+    /* ==========================================================================
+       7. UPCOMING DATES / EVENTS TABLE
+       ========================================================================== */
+    .section-events {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .events-table th {
+      font-size: 10.5px;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .events-table td {
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .events-table td.event-date {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+
+    .events-table td.event-title {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border-hairline);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--accent-amber);
+    }
+
+    @media (max-width: 768px) {
+      .events-table, .events-table tbody, .events-table tr, .events-table td {
+        display: block;
+        width: 100%;
+      }
+      .events-table thead { display: none; }
+      .events-table tr {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid var(--border-hairline);
+      }
+      .events-table td {
+        padding: 0.35rem 0;
+        border: none;
+      }
+    }
+
+    /* ==========================================================================
+       8. CLOSING SECTION & FOOTER
+       ========================================================================== */
+    .section-closing {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 2rem 4rem 2rem;
+      text-align: center;
+    }
+
+    .closing-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .closing-sub {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-oversized-wordmark {
+      width: 100%;
+      overflow: hidden;
+      border-top: 1px solid var(--border-hairline);
+      padding-top: 2rem;
+      margin-top: 6rem;
+    }
+
+    .big-wordmark {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(4rem, 16vw, 18rem);
+      line-height: 0.8;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      text-align: center;
+      transform: translateY(18%);
+      user-select: none;
+    }
+
+    .footer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 2rem 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .footer-meta a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-meta a:hover {
+      color: var(--accent-amber);
+    }
+
+    /* ==========================================================================
+       9. AUDIO PLAYER CONTROL WIDGET
+       ========================================================================== */
+    .audio-control-widget {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(16, 19, 23, 0.9);
+      border: 1px solid var(--accent-amber);
+      padding: 0.6rem 1.2rem;
+      border-radius: 9999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      cursor: pointer;
+    }
+
+    .audio-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .audio-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.05em;
+    }
+
+    .audio-artist {
+      font-size: 9px;
+      color: var(--accent-amber);
+      letter-spacing: 0.08em;
+    }
+
+    .audio-btn {
+      background: var(--accent-amber);
+      border: none;
+      color: var(--bg-primary);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .audio-control-widget:hover .audio-btn {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <a href="#" class="nav-brand">CFC SOUNDS<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#releases">RELEASES</a></li>
+      <li><a href="#artists">ARTISTS</a></li>
+      <li><a href="#events">EVENTS</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">GET IN TOUCH</a>
+  </nav>
+
+  <!-- PORTAL HERO -->
+  <div class="hero-container" id="hero">
+    <div class="hero-sticky-stage">
+      <div class="hero-bg-photo" id="heroBg">
+        <div class="duotone-overlay"></div>
+        <div class="radial-veil"></div>
+      </div>
+
+      <!-- Portal Panels -->
+      <div class="portal-panel left" id="panelLeft"></div>
+      <div class="portal-panel right" id="panelRight"></div>
+
+      <!-- Accent Dots -->
+      <div class="accent-dot dot-amber" id="dotAmber"></div>
+      <div class="accent-dot dot-teal" id="dotTeal"></div>
+
+      <!-- Center Split Wordmark -->
+      <div class="hero-wordmark">
+        <span class="wordmark-span" id="wmLeft">CFC</span>
+        <span class="wordmark-span" id="wmRight">SOUNDS</span>
+      </div>
+
+      <!-- Corner Metadata -->
+      <div class="corner-meta meta-top-left uppercase">INDEPENDENT RECORD LABEL</div>
+      <div class="corner-meta meta-top-right uppercase">EST. 2026 — INDONESIA</div>
+    </div>
+  </div>
+
+  <!-- STATEMENT FOLD -->
+  <section class="section-statement" id="about">
+    <div class="statement-content">
+      <span class="section-label uppercase">OUR MANIFESTO</span>
+      <h1 class="statement-text">
+        WE BELIEVE MUSIC IS MORE THAN SOUND. IT IS A <span class="highlight">LANGUAGE THAT CONNECTS</span> PEOPLE, CULTURES, AND UNEXPECTED WORLDS.
+      </h1>
+    </div>
+    <div class="outlined-numeral text-stroke-outlined">01</div>
+    <div class="floating-circle-img" id="floatingCircle"></div>
+  </section>
+
+  <!-- RELEASES / PHYSICAL RECORD DECK -->
+  <section class="section-deck" id="releases">
+    <div class="deck-info">
+      <span class="section-label uppercase">CATALOGUE DISCOGRAPHY</span>
+      <h2>THE SOUND OF WHAT'S NEXT.</h2>
+      <p>
+        A collection of sounds, stories, and independent voices. Each release represents a different perspective within our evolving musical universe.
+      </p>
+      <div class="btn-group">
+        <a href="#" class="btn btn-primary uppercase">EXPLORE CATALOGUE</a>
+        <a href="#" class="btn btn-secondary uppercase">SUBMIT YOUR MUSIC</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="deck-stage" id="deckStage" tabindex="0" aria-label="Interactive Record Deck">
+        <!-- Cards injected dynamically via JS -->
+      </div>
+      <div class="deck-controls">
+        <span>DRAG / ARROW KEYS TO EXPLORE</span>
+        <span id="deckCounter">01 / 04</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTIST ROSTER -->
+  <section class="section-roster" id="artists">
+    <span class="section-label uppercase" style="margin-bottom: 3rem;">ARTIST ROSTER</span>
+    <ul class="roster-list">
+      <li>
+        <a href="#" class="roster-row">
+          <span class="roster-num">ARTIST 01</span>
+          <span class="roster-name">NOVA THEORY</span>
+          <span class="roster-count">04 RELEASES</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="roster-row">
+          <span class="roster-num">ARTIST 02</span>
+          <span class="roster-name">AFTER HOURS</span>
+          <span class="roster-count">03 RELEASES</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="roster-row">
+          <span class="roster-num">ARTIST 03</span>
+          <span class="roster-name">STATIC BLOOM</span>
+          <span class="roster-count">02 RELEASES</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="roster-row">
+          <span class="roster-num">ARTIST 04</span>
+          <span class="roster-name">ECHO FORM</span>
+          <span class="roster-count">05 RELEASES</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- UPCOMING DATES -->
+  <section class="section-events" id="events">
+    <span class="section-label uppercase" style="margin-bottom: 3rem;">UPCOMING DATES</span>
+    <table class="events-table">
+      <thead>
+        <tr>
+          <th>DATE</th>
+          <th>EVENT</th>
+          <th>LOCATION</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="event-date">NOV 14, 2026</td>
+          <td class="event-title">CFC NIGHTS 004</td>
+          <td>JAKARTA — ID</td>
+          <td><span class="status-badge">TICKETS AVAILABLE</span></td>
+        </tr>
+        <tr>
+          <td class="event-date">DEC 02, 2026</td>
+          <td class="event-title">ANALOG FREQUENCIES Showcase</td>
+          <td>BANDUNG — ID</td>
+          <td><span class="status-badge">LIMITED SEATS</span></td>
+        </tr>
+        <tr>
+          <td class="event-date">JAN 18, 2027</td>
+          <td class="event-title">SONIC LAB VOL. II</td>
+          <td>BALI — ID</td>
+          <td><span class="status-badge">ANNOUNCING SOON</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CLOSING SECTION & FOOTER -->
+  <section class="section-closing" id="contact">
+    <h2 class="closing-headline">MAKE SOMETHING THAT MATTERS.</h2>
+    <p class="closing-sub">Independent sounds. Shared experiences. Always moving forward.</p>
+    <div class="btn-group" style="justify-content: center;">
+      <a href="mailto:contact@cfcsounds.com" class="btn btn-primary uppercase">GET IN TOUCH</a>
+      <a href="#releases" class="btn btn-secondary uppercase">EXPLORE RELEASES</a>
+    </div>
+
+    <div class="footer-oversized-wordmark">
+      <div class="big-wordmark">CFC</div>
+    </div>
+  </section>
+
+  <footer class="footer-meta">
+    <div>&copy; 2026 CFC SOUNDS. ALL RIGHTS RESERVED.</div>
+    <div>JAKARTA / BANDUNG — INDONESIA</div>
+    <div><a href="#">INSTAGRAM</a> &nbsp; / &nbsp; <a href="#">CONTACT@CFCSOUNDS.COM</a></div>
+  </footer>
+
+  <!-- AUDIO PLAYER WIDGET -->
+  <div class="audio-control-widget" id="audioWidget">
+    <button class="audio-btn" id="playAudioBtn">&#9654;</button>
+    <div class="audio-info">
+      <span class="audio-title">SWEET CHILD O' MINE</span>
+      <span class="audio-artist" id="audioStatusText">KLIK UNTUK PUTAR</span>
+    </div>
+  </div>
+
+  <!-- AUDIO ELEMENT (Ganti src="sweetchild.mp3" jika punya file MP3 lokal) -->
+  <audio id="bgAudio" loop preload="auto" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+  <!-- JAVASCRIPT: GSAP SCROLL, DECK INTERACTION & FIXED AUDIO PLAYER -->
+  <script>
+    // Register GSAP Plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ==========================================================================
+    // 1. GSAP SCROLL-DRIVEN PORTAL HERO ANIMATION
+    // ==========================================================================
+    const heroTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8
+      }
+    });
+
+    heroTl.to('#panelLeft', { xPercent: -105, ease: 'power2.inOut' }, 0)
+          .to('#panelRight', { xPercent: 105, ease: 'power2.inOut' }, 0)
+          .to('#heroBg', { scale: 1.0, ease: 'power1.out' }, 0)
+          .to('#wmLeft', { x: '-12vw', scale: 1.25, letterSpacing: '-0.04em', ease: 'power2.inOut' }, 0)
+          .to('#wmRight', { x: '12vw', scale: 1.25, letterSpacing: '-0.04em', ease: 'power2.inOut' }, 0)
+          .to('#dotAmber', { x: '-38vw', y: '-38vh', ease: 'power2.inOut' }, 0)
+          .to('#dotTeal', { x: '38vw', y: '38vh', ease: 'power2.inOut' }, 0);
+
+    // ==========================================================================
+    // 2. FLOATING CIRCLE SCROLL ANIMATION
+    // ==========================================================================
+    gsap.to('#floatingCircle', {
+      scrollTrigger: {
+        trigger: '.section-statement',
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1
+      },
+      y: 120,
+      rotate: 45,
+      opacity: 0.4
+    });
+
+    // ==========================================================================
+    // 3. PHYSICAL RECORD DECK INTERACTION (DRAG & THROW)
+    // ==========================================================================
+    const RELEASES_DATA = [
+      { cat: 'CFC-001', title: 'SYNTHESIS OF SILENCE', artist: 'NOVA THEORY', img: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=800&auto=format&fit=crop' },
+      { cat: 'CFC-002', title: 'MIDNIGHT FREQUENCIES', artist: 'AFTER HOURS', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop' },
+      { cat: 'CFC-003', title: 'ECHOES IN VACUUM', artist: 'STATIC BLOOM', img: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&auto=format&fit=crop' },
+      { cat: 'CFC-004', title: 'FUTURE ARCHIVE', artist: 'ECHO FORM', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop' }
+    ];
+
+    let deck = [...RELEASES_DATA];
+    const deckStage = document.getElementById('deckStage');
+    const deckCounter = document.getElementById('deckCounter');
+
+    function renderDeck() {
+      deckStage.innerHTML = '';
+      deck.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'deck-card';
+        card.style.zIndex = deck.length - index;
+
+        const rot = (index % 2 === 0 ? 1 : -1) * index * 3.5;
+        const offsetY = index * 12;
+        const scale = 1 - index * 0.04;
+        card.style.transform = `translateY(${offsetY}px) scale(${scale}) rotate(${rot}deg)`;
+
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.title}" />
+          <div class="card-meta">
+            <div>
+              <div class="card-cat">${item.cat}</div>
+              <div class="card-title">${item.title}</div>
+            </div>
+            <div class="card-artist">${item.artist}</div>
+          </div>
+        `;
+
+        if (index === 0) {
+          initDrag(card);
+        }
+
+        deckStage.appendChild(card);
+      });
+
+      deckCounter.textContent = `01 / 0${deck.length}`;
+    }
+
+    function cycleNext() {
+      const top = deck.shift();
+      deck.push(top);
+      renderDeck();
+    }
+
+    function cyclePrev() {
+      const bottom = deck.pop();
+      deck.unshift(bottom);
+      renderDeck();
+    }
+
+    function initDrag(card) {
+      let isDragging = false;
+      let startX = 0;
+      let currentX = 0;
+
+      card.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        card.style.transition = 'none';
+        card.setPointerCapture(e.pointerId);
+      });
+
+      card.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        currentX = e.clientX - startX;
+        const rot = currentX * 0.08;
+        card.style.transform = `translateX(${currentX}px) rotate(${rot}deg) scale(1.03)`;
+      });
+
+      card.addEventListener('pointerup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        card.style.transition = 'transform 0.4s ease';
+
+        if (Math.abs(currentX) > 100) {
+          const throwX = currentX > 0 ? 500 : -500;
+          card.style.transform = `translateX(${throwX}px) rotate(${currentX * 0.2}deg)`;
+          setTimeout(() => {
+            cycleNext();
+          }, 300);
+        } else {
+          card.style.transform = 'translateY(0px) scale(1) rotate(0deg)';
+        }
+      });
+    }
+
+    deckStage.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') cycleNext();
+      if (e.key === 'ArrowLeft') cyclePrev();
+    });
+
+    renderDeck();
+
+    // ==========================================================================
+    // 4. FIXED AUDIO PLAYER CONTROLLER LOGIC
+    // ==========================================================================
+    const bgAudio = document.getElementById('bgAudio');
+    const audioWidget = document.getElementById('audioWidget');
+    const playAudioBtn = document.getElementById('playAudioBtn');
+    const audioStatusText = document.getElementById('audioStatusText');
+    let isPlaying = false;
+
+    function toggleAudio() {
+      if (!isPlaying) {
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          playAudioBtn.innerHTML = '&#10074;&#10074;'; // Icon Pause
+          audioStatusText.textContent = "GUNS N' ROSES (PLAYING)";
+          audioStatusText.style.color = '#E8913C';
+        }).catch(error => {
+          console.error("Gagal memutar audio:", error);
+          audioStatusText.textContent = "GAGAL MEMUTAR (KLIK LAGI)";
+        });
+      } else {
+        bgAudio.pause();
+        isPlaying = false;
+        playAudioBtn.innerHTML = '&#9654;'; // Icon Play
+        audioStatusText.textContent = "GUNS N' ROSES (PAUSED)";
+        audioStatusText.style.color = '#9EA5A8';
+      }
+    }
+
+    // Event listener saat tombol widget diklik
+    audioWidget.addEventListener('click', toggleAudio);
+
+    // Mencoba memutar audio secara otomatis pada interaksi pertama pengguna di layar
+    function handleFirstUserInteraction() {
+      if (!isPlaying) {
+        toggleAudio();
+      }
+      // Hapus event listener setelah interaksi pertama dilakukan
+      window.removeEventListener('click', handleFirstUserInteraction);
+      window.removeEventListener('keydown', handleFirstUserInteraction);
+    }
+
+    window.addEventListener('click', handleFirstUserInteraction);
+    window.addEventListener('keydown', handleFirstUserInteraction);
+  </script>
+</body>
+</html>
